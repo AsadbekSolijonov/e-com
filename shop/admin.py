@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from shop.models import Category, Picture, Product, OrderItem, Order
+from shop.models import Category, Picture, Product, OrderItem, Order, Address
 
-admin.site.register([Category, OrderItem, Order])
+admin.site.register([Category, OrderItem, Order, Address])
 admin.site.register([Product, Picture])
 
 
