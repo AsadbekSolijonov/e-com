@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 from shop.views import CategoryViewSet, ProductViewSet, OrderViewSet, OrderItemViewSet, AddressViewSet
 from shop import views
@@ -22,6 +22,10 @@ urlpatterns = [
     # path('my-categories/create', views.CategoryListCreateMixinView.as_view(), name='my-category-create'),
     # path('my-categories/<int:pk>/update/', views.CategoryUpdateMixinView.as_view(), name='my-category-update'),
     path('api/categories/', views.CategoryListCreateMixin.as_view(), name='category-list-create'),
-    path('api/categories/<int:pk>/', views.CategoryRetrieveUpdateDeleteMixin.as_view(), name='category-detail-update-delete'),
+    # re_path(r'^api/categories/(?P<title>.+)/$', views.CategoryListFilter.as_view(), name='category-list-filter'),
+    # path('api/categories', views.CategoryListFilter.as_view(), name='category-list-filter'),
+    path('api/categories/<int:pk>/', views.CategoryRetrieveUpdateDeleteMixin.as_view(),
+         name='category-detail-update-delete'),
+    path('api/pictures/', views.PictureListMixinView.as_view(), name='picture-list')
 
 ]

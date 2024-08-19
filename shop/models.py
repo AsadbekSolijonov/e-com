@@ -18,6 +18,14 @@ class Picture(models.Model):
     def __str__(self):
         return f"Rasm {self.pk}"
 
+    @property
+    def url(self):
+        if self.image is None:
+            url = ''
+        else:
+            url = self.image.url
+        return url
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')

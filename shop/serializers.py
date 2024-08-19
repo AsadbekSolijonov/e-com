@@ -2,16 +2,31 @@ from jazzmin.templatetags.jazzmin import User
 
 from shop.models import Category, Product, Picture, Order, OrderItem, Address
 from rest_framework import serializers
+from rest_framework.serializers import Serializer, HyperlinkedModelSerializer, ModelSerializer
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = "__all__"
+class CategorySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField(max_length=50)
+    description = serializers.CharField(max_length=10000, allow_blank=True, allow_null=True)
+
+    def create(self, validated_data):
+        title = validated_data.get("title")
+        description = validated_data.get("description")
+        if 'badword' in title:
+            raise serializers.ValidationError('Kechirasiz badword so`zini ishlatish mumkin emas!')
+
+        return Category.objects.create(title=title, description=description)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.save()
+        return instance
 
 
-class PictureSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField()
+class PictureSerializer(serializers.HyperlinkedModelSerializer):
+    # url = serializers.SerializerMethodField()
 
     class Meta:
         model = Picture
